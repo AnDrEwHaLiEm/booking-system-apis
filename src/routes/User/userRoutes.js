@@ -1,49 +1,46 @@
-const employee = require("../../BusinessLogic/Employee/Employee");
+const user = require("../../BusinessLogic/User/User");
 const express = require('express');
-const employeeRouter = express.Router();
-const fs = require('fs');
-const uploadWithStorage = require("../../uploadImages/multerSetup");
+const userRouter = express.Router();
 
 ////////////////////////  create user account //////////////////////////////
 
-employeeRouter.post("/new", employee.checkEmailAndPhoneAvailabilty, employee.bcryptPassword, async(req, res) => {
+userRouter.post("/new", user.checkEmailAndPhoneAvailabilty, user.bcryptPassword, async (req, res) => {
     try {
-        await uploadWithStorage.single("personalPicture");
-        return employee.createModel(req, res);
+        return user.createModel(req, res);
     } catch (error) {
         return res.sendStatus(400);
     }
 });
-employeeRouter.put("/edit", employee.checkEmailAndPhoneAvailabilty, employee.bcryptPassword, async(req, res) => {
+userRouter.put("/edit", user.checkEmailAndPhoneAvailabiltyEdit, user.bcryptPassword, async (req, res) => {
     try {
-        return employee.EditModel(req, res);
+        return user.EditModel(req, res);
     } catch (error) {
         return res.sendStatus(400);
     }
 });
-employeeRouter.delete("/delete/:_ids", async(req, res) => {
+userRouter.delete("/delete/:_ids", async (req, res) => {
     try {
-        return employee.deleteModelsById(req, res);
-    } catch (error) {
-        return res.sendStatus(400);
-    }
-});
-
-employeeRouter.get("/showOne/:_id", async(req, res) => {
-    try {
-        return employee.getOneEmployee(req, res);
+        return user.deleteModelsById(req, res);
     } catch (error) {
         return res.sendStatus(400);
     }
 });
 
-
-employeeRouter.get("/showMany/:limit", async(req, res) => {
+userRouter.get("/showOne/:_id", async (req, res) => {
     try {
-        return employee.getManyEmployees(req, res);
+        return user.getOneuser(req, res);
     } catch (error) {
         return res.sendStatus(400);
     }
 });
 
-module.exports = employeeRouter;
+
+userRouter.get("/showMany/:limit", async (req, res) => {
+    try {
+        return user.getMany(req, res);
+    } catch (error) {
+        return res.sendStatus(400);
+    }
+});
+
+module.exports = userRouter;

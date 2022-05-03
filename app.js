@@ -1,11 +1,10 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const lineRouter = require('./src/routes/Lines/lineRoutes');
-const trainRouter = require('./src/routes/Train/trainRoutes');
+const employeeRouter = require('./src/routes/Employee/employeeRoutes');
 const authintication = require('./src/authintication/authintication');
-const employeeRouter = require('./src/routes/User/userRoutes');
+const userRouter = require('./src/routes/User/userRoutes');
 const authRouter = require('./src/routes/authintication/authinticationRoutes');
-const { newsRouter, newsRouterClient } = require('./src/routes/News/newsRoutes');
+const { newsRouter } = require('./src/routes/News/newsRoutes');
 const cors = require('cors');
 require('dotenv/config')
 
@@ -22,8 +21,6 @@ app.use(cors())
 
 app.use('/static', express.static(path.join(__dirname, 'public')))
 //app.use('/static', express.static('public'))
-///////Client///////////////////////////////////////
-app.use('/news', newsRouterClient);
 /////////////////////////////////////////////////////
 app.use('/authintication', authRouter)
 /////////////////////////////////////////////////////
@@ -31,16 +28,15 @@ app.use('/authintication', authRouter)
 app.use(authintication.authinticate)
 
 //////Employee///////////////////////////////////////
-app.use("/news", newsRouter);
-app.use("/line", lineRouter);
-app.use("/train", trainRouter);
+app.use("/user", userRouter);
 app.use("/employee", employeeRouter);
+app.use("/news", newsRouter);
 
 /////////////////////////////////////////////////
 
 
 
-app.get('/', (req, res) => res.send('yes aim working on host 4000'))
+app.get('/', (req, res) => res.send('yes iam working on host 4000'))
 
 
 mongoose.connect(

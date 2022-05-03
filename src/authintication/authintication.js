@@ -1,6 +1,5 @@
 const jwt = require('jsonwebtoken')
-const { NextFunction, Request, Response } = require('express')
-const EmployeeModel = require('../MongoSchema/User/userModel')
+const EmployeeModel = require('../MongoSchema/Employee/employeeModel')
 const bcrypt = require('bcryptjs')
 const fs = require('fs')
 

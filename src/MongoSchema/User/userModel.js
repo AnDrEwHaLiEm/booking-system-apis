@@ -4,14 +4,12 @@ const requiredString = {
     type: String,
     required: true,
 }
-const EmployeeModel = mongoose.Schema({
+const UserModel = mongoose.Schema({
     firstName: requiredString,
     lastName: requiredString,
-    phone_number: requiredString,
-    nationalIdNumber: requiredString,
+    phoneNumber: requiredString,
     nationalId: requiredString,
-    personalPicture: requiredString,
-    authority: requiredString,
+    avatar: requiredString,
     password: requiredString,
     age: {
         type: Number,
@@ -26,15 +24,24 @@ const EmployeeModel = mongoose.Schema({
         ],
         required: true,
     },
-    address: requiredString,
     email: requiredString,
-    jobTitle: requiredString,
+    isaPartner: {
+        type: Boolean,
+        default: false,
+    },
     resetPassword: {
         type: String,
         default: ""
     },
-
+    workAt: {
+        type: String,
+        default: ""
+    },
+    ticketsHistory: {
+        type: [String],
+        default: [],
+    }
 })
 
 
-module.exports = mongoose.model('Employee', EmployeeModel)
+module.exports = mongoose.model('User', UserModel)

@@ -1,6 +1,6 @@
 const Edit = require('../Edit/Edit');
 const NewsModel = require('../../MongoSchema/News/newsModel');
-const employee = require('../Employee/Employee');
+const employee = require('../User/User');
 
 class News extends Edit {
     constructor(Model) {

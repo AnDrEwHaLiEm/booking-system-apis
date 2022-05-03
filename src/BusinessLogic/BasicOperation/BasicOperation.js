@@ -25,26 +25,5 @@ class BasicOperation {
             return res.sendStatus(400);
         }
     }
-
-    async getOneModelById(req, res) {
-        try {
-            const { _id } = req.params;
-            const getOneModel = await this.Model.findById(_id);
-            if (!getOneModel) return res.sendStatus(404);
-            return res.json({ getOneModel });
-        } catch (error) {
-            return res.sendStatus(400);
-        }
-    }
-    async getManyModels(req, res) {
-        try {
-            const { limit } = req.params;
-            const getLimitedModle = await this.Model.find().limit(parseInt(limit));
-            if (getLimitedModle == null) return res.sendStatus(404);
-            return res.json({ getLimitedModle });
-        } catch (error) {
-            return res.sendStatus(400);
-        }
-    }
 }
 module.exports = BasicOperation;

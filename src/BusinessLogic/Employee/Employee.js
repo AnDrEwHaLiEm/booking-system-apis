@@ -1,6 +1,6 @@
 const Edit = require('../Edit/Edit');
 const bcrypt = require('bcryptjs');
-const EmployeeModel = require('../../MongoSchema/User/userModel');
+const EmployeeModel = require('../../MongoSchema/Employee/employeeModel');
 
 class Employee extends Edit {
     constructor(Model) {
@@ -11,12 +11,9 @@ class Employee extends Edit {
     async bcryptPassword(req, res, next) {
         try {
             const { password } = req.body;
-            if (password.length >= 8) {
-                const hashPassword = await bcrypt.hashSync(password, 10);
-                req.body.password = hashPassword;
-                return next();
-            } else
-                res.status(406).send("Invalid Password");
+            const hashPassword = await bcrypt.hashSync(password, 10);
+            req.body.password = hashPassword;
+            next();
         } catch (error) {
             res.sendStatus(400);
 
@@ -24,36 +21,48 @@ class Employee extends Edit {
     }
 
     async checkEmailAndPhoneAvailabilty(req, res, next) {
-        const { _id, email, phone_number, nationalIdNumber, } = req.body;
-        const employeeExist = await this.Model.findOne({ _id: { $ne: _id }, $or: [{ email }, { phone_number }, { nationalIdNumber }] });
-        if (employeeExist && employeeExist._id !== _id) {
-            res.status(406).send("This Email , phone or nationalIdNumber Is already Exist");
-        } else
+        const { email, phoneNumber, nationalId } = req.body;
+        const employee = await this.Model.exists({ $or: [{ email }, { phoneNumber }, { nationalId }] });
+        if (employee) {
+            res.status(406).send("this user already exist");
+        }
+        else
             next();
     }
-    async getManyEmployees(req, res) {
+    async checkEmailAndPhoneAvailabiltyEdit(req, res, next) {
+        const { _id, email, phoneNumber, nationalId } = req.body;
+        const employee = await this.Model.exists({ _id: _id, $or: [{ email }, { phoneNumber }, { nationalId }] });
+        if (employee && employee._id !== _id) {
+            res.status(406).send("this user already exist");
+        }
+        else
+            next();
+    }
+
+
+    async getMany(req, res) {
         const { limit } = req.params;
-        const getEmployees = await this.Model.find().limit(parseInt(limit));
-        const result = getEmployees.map((element) => {
-            const { _id, firstName, lastName, jobTitle, personalPicture } = element;
-            return { _id, firstName, lastName, jobTitle, personalPicture };
+        const getModels = await this.Model.find().limit(parseInt(limit));
+        const result = getModels.map((element) => {
+            const { _id, firstName, lastName, avatar, gender, email } = element;
+            return { _id, firstName, lastName, avatar, gender, email };
         });
         return res.json({ result });
     }
 
-    async getOneEmployee(req, res) {
+    async getOne(req, res) {
         try {
             const { _id } = req.params;
             const getOneModel = await this.Model.findById(_id);
             if (!getOneModel) return res.sendStatus(404);
             const {
-                firstName, lastName, phone_number, nationalIdNumber,
-                personalPicture, authority, age, gender, address, email, jobTitle
+                firstName, lastName, phoneNumber, nationalId,
+                avatar, age, gender, email
             } = getOneModel;
             return res.json({
                 result: {
-                    firstName, lastName, phone_number, nationalIdNumber,
-                    personalPicture, authority, age, gender, address, email, jobTitle
+                    firstName, lastName, phoneNumber, nationalId,
+                    avatar, age, gender, email
                 }
             });
         } catch (error) {
@@ -61,13 +70,13 @@ class Employee extends Edit {
         }
     }
 
-    async getEmployees(_id) {
-        const employee = this.Model.find({ _id: _id });
-        if (employee)
-            return employee;
+    async getModels(_id) {
+        const model = this.Model.find({ _id: _id });
+        if (model)
+            return model;
         return [];
     }
 }
 
 const employee = new Employee(EmployeeModel);
-module.exports = employee;
+module.exports = { employee, Employee };
