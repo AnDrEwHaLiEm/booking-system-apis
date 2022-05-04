@@ -35,7 +35,7 @@ userRouter.get("/showOne/:_id", async (req, res) => {
 });
 
 
-userRouter.get("/showMany/:limit", async (req, res) => {
+userRouter.get("/showMany/:limit/:isaPartner", async (req, res) => {
     try {
         return user.getMany(req, res);
     } catch (error) {

@@ -6,6 +6,7 @@ class Employee extends Edit {
     constructor(Model) {
         super(Model)
         this.checkEmailAndPhoneAvailabilty = this.checkEmailAndPhoneAvailabilty.bind(this)
+        this.checkEmailAndPhoneAvailabiltyEdit = this.checkEmailAndPhoneAvailabiltyEdit.bind(this)
     }
 
     async bcryptPassword(req, res, next) {
@@ -16,7 +17,6 @@ class Employee extends Edit {
             next();
         } catch (error) {
             res.sendStatus(400);
-
         }
     }
 
@@ -29,20 +29,28 @@ class Employee extends Edit {
         else
             next();
     }
+
     async checkEmailAndPhoneAvailabiltyEdit(req, res, next) {
-        const { _id, email, phoneNumber, nationalId } = req.body;
-        const employee = await this.Model.exists({ _id: _id, $or: [{ email }, { phoneNumber }, { nationalId }] });
-        if (employee && employee._id !== _id) {
-            res.status(406).send("this user already exist");
+        try {
+            const { _id, email, phoneNumber, nationalId } = req.body;
+            const employee = await this.Model.exists({ _id: { $ne: _id }, $or: [{ email }, { phoneNumber }, { nationalId }] });
+            console.log(employee)
+            if (employee) {
+                res.status(406).send("this email,phone,nationalId use by some one else");
+            }
+            else {
+                console.log("Success")
+                next();
+            }
+        } catch (error) {
+            return res.status(400).send(error.message);
         }
-        else
-            next();
     }
 
 
     async getMany(req, res) {
-        const { limit } = req.params;
-        const getModels = await this.Model.find().limit(parseInt(limit));
+        const { limit, isaPartner } = req.params;
+        const getModels = await this.Model.find({ isaPartner }).limit(parseInt(limit));
         const result = getModels.map((element) => {
             const { _id, firstName, lastName, avatar, gender, email } = element;
             return { _id, firstName, lastName, avatar, gender, email };

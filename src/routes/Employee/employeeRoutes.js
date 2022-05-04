@@ -1,6 +1,6 @@
 const express = require('express');
 const employeeRouter = express.Router();
-const {employee} = require("../../BusinessLogic/Employee/Employee");
+const { employee } = require("../../BusinessLogic/Employee/Employee");
 
 employeeRouter.post("/new", employee.checkEmailAndPhoneAvailabilty, employee.bcryptPassword, async (req, res) => {
     try {
