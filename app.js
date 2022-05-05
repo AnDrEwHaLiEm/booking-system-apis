@@ -10,6 +10,7 @@ require('dotenv/config')
 
 ///////////////////////////// mongodb+srv://skill-counter-api:<password>@cluster0.figsh.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
 const path = require('path');
+const companyRouter = require('./src/routes/Company/companyRoutes');
 
 const app = express()
 
@@ -26,8 +27,8 @@ app.use('/authintication', authRouter)
 /////////////////////////////////////////////////////
 
 app.use(authintication.authinticate)
-
-//////Employee///////////////////////////////////////
+////////////////////////////////////////////////////
+app.use("/company", companyRouter);
 app.use("/user", userRouter);
 app.use("/employee", employeeRouter);
 app.use("/news", newsRouter);

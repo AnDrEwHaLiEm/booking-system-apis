@@ -12,8 +12,10 @@ class Employee extends Edit {
     async bcryptPassword(req, res, next) {
         try {
             const { password } = req.body;
-            const hashPassword = await bcrypt.hashSync(password, 10);
-            req.body.password = hashPassword;
+            if (password) {
+                const hashPassword = await bcrypt.hashSync(password, 10);
+                req.body.password = hashPassword;
+            }
             next();
         } catch (error) {
             res.sendStatus(400);
@@ -39,7 +41,6 @@ class Employee extends Edit {
                 res.status(406).send("this email,phone,nationalId use by some one else");
             }
             else {
-                console.log("Success")
                 next();
             }
         } catch (error) {
