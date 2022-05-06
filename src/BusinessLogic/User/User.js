@@ -1,11 +1,16 @@
-const {Employee} = require('../Employee/Employee');
+const { Employee } = require('../Employee/Employee');
 const UserModel = require('../../MongoSchema/User/userModel');
+const companyModel = require('../../MongoSchema/Company/companyModel');
 
 class User extends Employee {
-    
+
     constructor(Model) {
         super(Model)
     }
+
+ 
+
+
 
     async getOneuser(req, res) {
         try {

@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-
 const requiredString = {
     type: String,
     required: true,
@@ -10,7 +9,11 @@ const CompanyModel = mongoose.Schema({
     email: requiredString,
     phoneNumber: requiredString,
     address: requiredString,
-    serves: String
+    serves: String,
+    admin: {
+        type: [String],
+        default: [],
+    }
 })
 
 
