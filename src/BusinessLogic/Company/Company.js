@@ -1,5 +1,6 @@
 const Edit = require('../Edit/Edit');
 const companyModel = require('../../MongoSchema/Company/companyModel');
+const userModel = require('../../MongoSchema/User/userModel');
 
 class Company extends Edit {
     constructor(Model) {
@@ -10,7 +11,12 @@ class Company extends Edit {
         try {
             const { _id } = req.params;
             const result = await this.Model.findById(_id);
-            return res.send({result})
+            const admin = await userModel.find({ workAt: _id });
+            result._doc.admin = admin.map((element) => {
+                const { firstName, lastName, avatar } = element;
+                return { firstName, lastName, avatar };
+            })
+            return res.send({ result })
         } catch (error) {
             return res.status(400).send(error)
         }

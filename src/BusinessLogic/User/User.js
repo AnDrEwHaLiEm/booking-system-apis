@@ -8,7 +8,7 @@ class User extends Employee {
         super(Model)
     }
 
- 
+
 
 
 
@@ -16,15 +16,21 @@ class User extends Employee {
         try {
             const { _id } = req.params;
             const getOneModel = await this.Model.findById(_id);
-            if (!getOneModel) return res.sendStatus(404);
+            if (!getOneModel)
+                return res.sendStatus(404);
+            let companyName = null;
+            if (getOneModel.isaPartner === true && getOneModel.workAt !== '') {
+                const company = await companyModel.findById({ _id: getOneModel.workAt });
+                companyName = company.companyName;
+            }
             const {
                 firstName, lastName, phoneNumber, nationalId,
-                avatar, age, gender, email, isaPartner, workAr, ticketsHistory
+                avatar, age, gender, email, isaPartner, ticketsHistory, workAt
             } = getOneModel;
             return res.json({
                 result: {
                     firstName, lastName, phoneNumber, nationalId,
-                    avatar, age, gender, email, isaPartner, workAr, ticketsHistory
+                    avatar, age, gender, email, isaPartner, workAt, companyName, ticketsHistory
                 }
             });
         } catch (error) {
