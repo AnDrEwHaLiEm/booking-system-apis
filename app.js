@@ -4,7 +4,7 @@ const employeeRouter = require('./src/routes/Employee/employeeRoutes');
 const authintication = require('./src/authintication/authintication');
 const userRouter = require('./src/routes/User/userRoutes');
 const authRouter = require('./src/routes/authintication/authinticationRoutes');
-const { newsRouter } = require('./src/routes/News/newsRoutes');
+const hallsRouter = require('./src/routes/Halls/hallsRoutes');
 const cors = require('cors');
 require('dotenv/config')
 
@@ -31,7 +31,7 @@ app.use(authintication.authinticate)
 app.use("/company", companyRouter);
 app.use("/user", userRouter);
 app.use("/employee", employeeRouter);
-app.use("/news", newsRouter);
+app.use("/halls", hallsRouter);
 
 /////////////////////////////////////////////////
 
