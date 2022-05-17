@@ -36,13 +36,13 @@ class Halls extends Edit {
         const getAll = await this.Model.find().limit(parseInt(limit));
         if (getAll == null)
             return res.status(404).send("Models Not Found");
-        const resualt = getAll.map((element) => {
-            const { _id, itemName, address, itemType, chairClassA, chairClassB, chairClassC } = element;
+        const result = getAll.map((element) => {
+            const { _id, hallName, address, hallType, chairClassA, chairClassB, chairClassC } = element;
             const numberOfChair = parseInt(chairClassA) + parseInt(chairClassB) + parseInt(chairClassC);
-            return { _id, itemName, address, itemType, numberOfChair };
+            return { _id, hallName, address, hallType, numberOfChair };
 
         });
-        return res.json({ resualt });
+        return res.json({ result });
     }
 
 }
