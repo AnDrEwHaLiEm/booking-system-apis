@@ -19,7 +19,7 @@ class Halls extends Edit {
 
             const {
                 hallName, address, hallType, chairClassA,
-                chairClassB, chairClassC } = getOne;
+                chairClassB, chairClassC,company_id } = getOne;
             return res.json({
                 result: {
                     hallName, address, hallType, chairClassA,
