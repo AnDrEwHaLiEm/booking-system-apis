@@ -23,7 +23,7 @@ class Halls extends Edit {
             return res.json({
                 result: {
                     hallName, address, hallType, chairClassA,
-                    chairClassB, chairClassC, companyName
+                    chairClassB, chairClassC, companyName, company_id
                 }
             });
         } catch (error) {
