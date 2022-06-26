@@ -1,16 +1,17 @@
+const path = require('path');
+const cors = require('cors');
 const express = require('express');
 const mongoose = require('mongoose');
-const employeeRouter = require('./src/routes/Employee/employeeRoutes');
-const authintication = require('./src/authintication/authintication');
 const userRouter = require('./src/routes/User/userRoutes');
-const authRouter = require('./src/routes/authintication/authinticationRoutes');
 const hallsRouter = require('./src/routes/Halls/hallsRoutes');
-const cors = require('cors');
+const ticketRouter = require('./src/routes/Ticket/ticketRoutes');
+const companyRouter = require('./src/routes/Company/companyRoutes');
+const authintication = require('./src/authintication/authintication');
+const employeeRouter = require('./src/routes/Employee/employeeRoutes');
+const authRouter = require('./src/routes/authintication/authinticationRoutes');
 require('dotenv/config')
 
 ///////////////////////////// mongodb+srv://skill-counter-api:<password>@cluster0.figsh.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
-const path = require('path');
-const companyRouter = require('./src/routes/Company/companyRoutes');
 
 const app = express()
 
@@ -28,10 +29,11 @@ app.use('/authintication', authRouter)
 
 app.use(authintication.authinticate)
 ////////////////////////////////////////////////////
-app.use("/company", companyRouter);
 app.use("/user", userRouter);
-app.use("/employee", employeeRouter);
 app.use("/halls", hallsRouter);
+app.use("/ticket", ticketRouter);
+app.use("/company", companyRouter);
+app.use("/employee", employeeRouter);
 
 /////////////////////////////////////////////////
 
