@@ -21,6 +21,7 @@ class Ticket extends Edit {
             paid: false
         });
         console.log(tickets);
+        return res.send(tickets);
     }
 
 }
