@@ -16,10 +16,10 @@ class Ticket extends Edit {
     }
 
     async deleteExpair(req, res) {
-        const tickets = await this.Model.find({
-            expairAt: { $lte: new Date.now() },
-            paid: false
-        });
+        const tickets = await this.Model.find(
+            { expairAt: { $lte: new Date.now() } },
+            { paid: false }
+        );
         console.log(tickets);
         return res.send(tickets);
     }
