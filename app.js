@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const userRouter = require('./src/routes/User/userRoutes');
 const hallsRouter = require('./src/routes/Halls/hallsRoutes');
 const ticketRouter = require('./src/routes/Ticket/ticketRoutes');
+const eventsRouter = require('./src/routes/Events/eventsRoutes');
 const companyRouter = require('./src/routes/Company/companyRoutes');
 const authintication = require('./src/authintication/authintication');
 const employeeRouter = require('./src/routes/Employee/employeeRoutes');
@@ -31,10 +32,10 @@ app.use(authintication.authinticate)
 ////////////////////////////////////////////////////
 app.use("/user", userRouter);
 app.use("/halls", hallsRouter);
+app.use("/event", eventsRouter);
 app.use("/ticket", ticketRouter);
 app.use("/company", companyRouter);
 app.use("/employee", employeeRouter);
-
 /////////////////////////////////////////////////
 
 
