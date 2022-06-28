@@ -27,13 +27,13 @@ class Authintication {
         const { email, phone, password } = req.body
         const user = await EmployeeModel.findOne({ $or: [{ email }, { phone }] });
         if (!user) {
-            const error = new Error('invalid credentials')
-            return res.status(400).send({ error });
+            const error = new Error('email or password is error')
+            return res.status(400).send(error);
         }
         const passwordIsCorrect = await bcrypt.compare(password, user.password);
         if (!passwordIsCorrect) {
-            const error = new Error('invalid credentials')
-            return res.status(400).send({ error });
+            const error = new Error('email or password is error')
+            return res.status(400).send(error);
         }
         await EmployeeModel.updateOne({ _id: user._id }, { resetPassword: "" });
         const token = this.createMyToken({ _id: user._id, email: user.email, phone: user.phone })
