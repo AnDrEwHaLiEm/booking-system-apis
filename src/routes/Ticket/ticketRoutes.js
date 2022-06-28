@@ -3,7 +3,7 @@ const express = require('express');
 const ticketRouter = express.Router();
 
 
-ticketRouter.post('/new', async (req, res) => {
+ticketRouter.post('/new', ticket.deleteExpair, ticket.makeChairUnAvailable, async (req, res) => {
     try {
         return ticket.createModel(req, res);
     } catch (error) {
@@ -21,13 +21,18 @@ ticketRouter.put('/edit', async (req, res) => {
 
 })
 
-ticketRouter.delete('/delete/:_ids', async (req, res) => {
+
+ticketRouter.put('/showOne/:_id', ticket.deleteExpair, async (req, res) => {
     try {
-        return ticket.deleteExpair(req, res);
+        return ticket.getOne(req, res);
     } catch (error) {
         return res.sendStatus(400);;
     }
+
 })
+
+
+
 
 
 module.exports = ticketRouter;

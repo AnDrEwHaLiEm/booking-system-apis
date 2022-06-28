@@ -7,11 +7,11 @@ const requiredString = {
 
 const TicketModel = mongoose.Schema({
     eventId: requiredString,
-    userId:requiredString,
+    userId: requiredString,
     chairClass: requiredString,
     chairNumber: {
         type: String,
-        default:"",
+        default: "",
     },
     paid: {
         type: Boolean,
@@ -19,7 +19,7 @@ const TicketModel = mongoose.Schema({
     },
     expairAt: {
         type: Date,
-        default: Date.now() + (3 * 60 * 60),
+        default: Date.now() + (3 * 60 * 60 * 1000),
     }
 })
 module.exports = mongoose.model('Ticket', TicketModel);
