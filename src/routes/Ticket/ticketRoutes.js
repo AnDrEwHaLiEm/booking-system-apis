@@ -22,8 +22,9 @@ ticketRouter.put('/edit', async (req, res) => {
 })
 
 
-ticketRouter.put('/showOne/:_id', ticket.deleteExpair, async (req, res) => {
+ticketRouter.get('/showOne/:_id', ticket.deleteExpair, async (req, res) => {
     try {
+
         return ticket.getOne(req, res);
     } catch (error) {
         return res.sendStatus(400);;
