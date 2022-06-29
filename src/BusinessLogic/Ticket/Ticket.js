@@ -84,6 +84,7 @@ class Ticket extends Edit {
                 const { firstName, lastName, phoneNumber } = user;
                 const { eventTitle, poster, presenter, startTime, endTime } = event;
                 const { hallName, address } = hall;
+                const { paid, expairAt } = ticket;
                 const result = {
                     firstName
                     , lastName
@@ -95,6 +96,8 @@ class Ticket extends Edit {
                     , endTime
                     , hallName
                     , address
+                    , paid
+                    , expairAt
                 }
                 return res.send(result);
             }
