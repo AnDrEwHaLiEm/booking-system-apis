@@ -25,6 +25,7 @@ class Ticket extends Edit {
         if (avalableSeat[index] >= 0) {
             await eventModel.updateOne({ _id: eventId }, { avalableSeat });
             req.body.chairNumber = chairNumber;
+            req.body.userId = req.body.decodedToken._id;
             next();
         }
         else {
@@ -82,9 +83,11 @@ class Ticket extends Edit {
                 const user = await userModel.findById(ticket.userId);
                 const hall = await hallsModel.findById(event.hallId);
                 const { firstName, lastName, phoneNumber } = user;
-                const { eventTitle, poster, presenter, startTime, endTime } = event;
+                const { eventTitle, poster, presenter, startTime, endTime, Cost } = event;
                 const { hallName, address } = hall;
-                const { paid, expairAt } = ticket;
+                const { paid, expairAt, chairNumber, chairClass } = ticket;
+                const index = chairClass.charCodeAt(0) - 'A'.charCodeAt(0);
+                const costTicket = Cost[index];
                 const result = {
                     firstName
                     , lastName
@@ -98,6 +101,42 @@ class Ticket extends Edit {
                     , address
                     , paid
                     , expairAt
+                    , chairNumber
+                    , Cost: costTicket
+                }
+                return res.send(result);
+            }
+            else
+                return res.sendStatus(404);
+        } catch (error) {
+            return res.sendStatus(400);
+        }
+    }
+
+    async getMay(req, res) {
+        try {
+            const { _id } = req.body.decodedToken;
+            const ticket = await this.Model.findById(_id);
+            if (ticket) {
+                const event = await eventModel.findById(ticket.eventId);
+                const hall = await hallsModel.findById(event.hallId);
+                const { eventTitle, poster, startTime, endTime, Cost } = event;
+                const { hallName, address } = hall;
+                const { paid, expairAt, chairNumber, chairClass } = ticket;
+                const index = chairClass.charCodeAt(0) - 'A'.charCodeAt(0);
+                const costTicket = Cost[index];
+                const result = {
+                    eventTitle
+                    , poster
+                    , presenter
+                    , startTime
+                    , endTime
+                    , hallName
+                    , address
+                    , paid
+                    , expairAt
+                    , chairNumber
+                    , Cost: costTicket
                 }
                 return res.send(result);
             }

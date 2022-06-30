@@ -12,21 +12,19 @@ class Employee extends Edit {
     async bcryptPassword(req, res, next) {
         try {
             const { password } = req.body;
-            
             if (password) {
                 const hashPassword = await bcrypt.hashSync(password, 10);
                 req.body.password = hashPassword;
             }
             next();
         } catch (error) {
-            res.sendStatus(400);
+            res.status(400).send(error);
         }
     }
 
     async checkEmailAndPhoneAvailabilty(req, res, next) {
         const { email, phoneNumber, nationalId } = req.body;
         const employee = await this.Model.exists({ $or: [{ email }, { phoneNumber }, { nationalId }] });
-        console.log(employee);
         if (employee) {
             res.status(406).send("this user already exist");
         }

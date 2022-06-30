@@ -3,7 +3,7 @@ const express = require('express');
 const ticketRouter = express.Router();
 
 
-ticketRouter.post('/new', ticket.deleteExpair, ticket.makeChairUnAvailable, async (req, res) => {
+ticketRouter.post('/new', ticket.deleteExpair, ticket.makeChairUnAvailable,async (req, res) => {
     try {
         return ticket.createModel(req, res);
     } catch (error) {
@@ -26,6 +26,15 @@ ticketRouter.get('/showOne/:_id', ticket.deleteExpair, async (req, res) => {
     try {
 
         return ticket.getOne(req, res);
+    } catch (error) {
+        return res.sendStatus(400);;
+    }
+
+})
+
+ticketRouter.get('/showMany', ticket.deleteExpair, async (req, res) => {
+    try {
+        return ticket.getMay(req, res);
     } catch (error) {
         return res.sendStatus(400);;
     }

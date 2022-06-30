@@ -1,17 +1,20 @@
 const express = require('express');
 const employeeRouter = express.Router();
 const { employee } = require("../../BusinessLogic/Employee/Employee");
+const uploadEmployeeAvatar = require('../../uploadImages/EmployeeAvatar/multerSetupEmploeyeeAvatar');
 
-employeeRouter.post("/new", employee.checkEmailAndPhoneAvailabilty, employee.bcryptPassword, async (req, res) => {
+employeeRouter.post("/new", uploadEmployeeAvatar.single('avatarImage'), employee.checkEmailAndPhoneAvailabilty, employee.bcryptPassword, async (req, res) => {
     try {
+        req.body.avatar = req.file.filename;
         return employee.createModel(req, res);
     } catch (error) {
-        return res.sendStatus(400);
+        return res.status(400).send(error);
     }
 });
 
-employeeRouter.put("/edit", employee.checkEmailAndPhoneAvailabiltyEdit, employee.bcryptPassword, async (req, res) => {
+employeeRouter.put("/edit", uploadEmployeeAvatar.single('avatarImage') ,employee.checkEmailAndPhoneAvailabiltyEdit, employee.bcryptPassword, async (req, res) => {
     try {
+        req.body.avatar = req.file.filename;
         return employee.EditModel(req, res);
     } catch (error) {
         return res.sendStatus(400);

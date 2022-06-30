@@ -15,7 +15,6 @@ const EventsModel = mongoose.Schema({
 
     },
     hallId: requiredString,
-    postedBy: requiredString,
     startTime: {
         type: Number,
         require: true

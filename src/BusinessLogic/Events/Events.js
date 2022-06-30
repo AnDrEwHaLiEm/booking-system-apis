@@ -6,19 +6,18 @@ class Events extends Edit {
         super(Model)
     }
 
-    async postedBy(req, res, next) {
-        const { _id } = req.body.decodedToken;
-        req.body.postedBy = _id;
-        next();
-    }
-
     async getAvailableSeat(req, res, next) {
         const { hallId } = req.body;
         const hall = await hallsModel.findById({ _id: hallId });
-        const { chairClassA, chairClassB, chairClassC } = hall;
-        let seat = [chairClassA, chairClassB, chairClassC];
-        req.body.avalableSeat = seat;
-        next();
+        if (hall) {
+            const { chairClassA, chairClassB, chairClassC } = hall;
+            let seat = [chairClassA, chairClassB, chairClassC];
+            req.body.avalableSeat = seat;
+            next();
+        }
+        else {
+            return res.status(404).send("Not found HALL");
+        }
     }
 
     async showMany(req, res) {
@@ -82,10 +81,8 @@ class Events extends Edit {
                     hallName
                     , address
                     , hallType
-                    , chairClassA
-                    , chairClassB
-                    , chairClassC } = getOnehall;
-                const result = { presenter, avalableSeat, Cost, eventTitle, poster, department, hallId, startTime, endTime, hallName, address, hallType, chairClassA, chairClassB, chairClassC };
+                    } = getOnehall;
+                const result = { presenter, avalableSeat, Cost, eventTitle, poster, department, hallId, startTime, endTime, hallName, address, hallType };
                 return res.status(200).send(result);
             }
             else {

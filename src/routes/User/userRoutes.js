@@ -1,11 +1,13 @@
 const user = require("../../BusinessLogic/User/User");
 const express = require('express');
 const userRouter = express.Router();
-
+const userRoterGuest = express.Router()
+const uploadUserAvatar = require('../../uploadImages/UserAvatar/multerSetupUserAvatar');
 ////////////////////////  create user account //////////////////////////////
 
-userRouter.post("/new", user.checkEmailAndPhoneAvailabilty, user.bcryptPassword, async (req, res) => {
+userRoterGuest.post("/new", uploadUserAvatar.single('avatarImage'),user.checkEmailAndPhoneAvailabilty, user.bcryptPassword, async (req, res) => {
     try {
+        req.body.avatar = req.file.filename;
         return user.createModel(req, res);
     } catch (error) {
         return res.sendStatus(400);
@@ -43,4 +45,4 @@ userRouter.get("/showMany/:limit/:isaPartner", async (req, res) => {
     }
 });
 
-module.exports = userRouter;
+module.exports = { userRouter, userRoterGuest };

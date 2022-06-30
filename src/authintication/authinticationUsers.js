@@ -1,15 +1,14 @@
 const jwt = require('jsonwebtoken')
-const EmployeeModel = require('../MongoSchema/Employee/employeeModel')
+const userModel = require('../MongoSchema/User/userModel')
 const bcrypt = require('bcryptjs')
 const fs = require('fs')
 
-class Authintication {
+class AuthinticationUser {
 
     constructor() {
         this.getPrivateKey = this.getPrivateKey.bind(this)
         this.logIn = this.logIn.bind(this)
         this.createMyToken = this.createMyToken.bind(this)
-        this.authinticate = this.authinticate.bind(this)
     }
 
     getPrivateKey() {
@@ -25,7 +24,7 @@ class Authintication {
 
     async logIn(req, res) {
         const { email, password } = req.body
-        const user = await EmployeeModel.findOne({email});
+        const user = await userModel.findOne({ email });
         if (!user) {
             return res.status(400).send('email or password is error');
         }
@@ -33,32 +32,14 @@ class Authintication {
         if (!passwordIsCorrect) {
             return res.status(400).send('email or password is error');
         }
-        await EmployeeModel.updateOne({ _id: user._id }, { resetPassword: "" });
+        //await userModel.updateOne({ _id: user._id }, { resetPassword: "" });
         const token = this.createMyToken({ _id: user._id, email: user.email, phone: user.phone })
         return res.send({ token })
-    }
-
-    async authinticate(req, res, next) {
-        try {
-            const authorizationHeader = req.headers['authorization'];
-            const token = authorizationHeader && authorizationHeader.split('=')[1]
-            if (!token)
-                return res.sendStatus(401)
-            const privateKey = this.getPrivateKey()
-            return jwt.verify(token, privateKey, async (error, decodedToken) => {
-                if (error)
-                    return res.status(401).send(error);
-                req.body.decodedToken = decodedToken
-                return next()
-            })
-        } catch (error) {
-            res.status(400).send(error)
-        }
     }
 }
 
 
-const authintication = new Authintication()
+const authinticationUser = new AuthinticationUser()
 
 
-module.exports = authintication;
+module.exports = authinticationUser;

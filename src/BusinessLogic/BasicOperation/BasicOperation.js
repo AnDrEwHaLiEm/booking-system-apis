@@ -10,7 +10,7 @@ class BasicOperation {
             const model = await newModel.save();
             return res.json({ model });
         } catch (error) {
-            return res.sendStatus(400);
+            return res.status(400).send(error);
         }
     }
 

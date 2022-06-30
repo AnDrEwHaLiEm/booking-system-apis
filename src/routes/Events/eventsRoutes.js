@@ -1,35 +1,15 @@
 const event = require('../../BusinessLogic/Events/Events');
 const express = require('express');
 const eventsRouter = express.Router();
+const eventsRouterPartner = express.Router();
+const uploadEventPoster = require('../../uploadImages/EventPoster/multerSetupEventPoster');
 
-eventsRouter.post('/new', event.postedBy, event.getAvailableSeat, async (req, res) => {
+eventsRouterPartner.post('/new', uploadEventPoster.single('posterImage'), event.getAvailableSeat, async (req, res) => {
     try {
-        if (req.body.postDate)
-            delete req.body.postDate;
+        req.body.poster = req.file.filename;
         if (req.body.endDate <= Date.now() + (24 * 60 * 60 * 1000))
-            return res.sendStatus(400);
+            return res.status(400).send("End date must be After 24 hour");
         return event.createModel(req, res);
-    } catch (error) {
-        return res.sendStatus(400);;
-    }
-})
-
-eventsRouter.put('/edit', async (req, res) => {
-    try {
-        if (req.body.postDate)
-            delete req.body.postDate;
-        if (req.body.endDate <= Date.now())
-            return res.sendStatus(400);
-        return event.EditModel(req, res);
-    } catch (error) {
-        return res.sendStatus(400);;
-    }
-
-})
-
-eventsRouter.delete('/delete/:_ids', async (req, res) => {
-    try {
-        return event.deleteModelsById(req, res);
     } catch (error) {
         return res.sendStatus(400);;
     }
@@ -63,4 +43,4 @@ eventsRouter.get('/showMany/:limit/:department', async (req, res) => {
 
 
 
-module.exports = eventsRouter;
+module.exports = { eventsRouter, eventsRouterPartner };
