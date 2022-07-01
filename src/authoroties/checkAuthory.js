@@ -35,7 +35,6 @@ async function checkAuthorty(req, res, next) {
         }
         const userAuthoritiesInAllModels = authorities[(employee ? "isEmployee" : user.isaPartner === true ? 'isPartner' : 'isNotPartner')];
         const userAuthoritiesInOneModel = userAuthoritiesInAllModels[modelName]
-        console.log(userAuthoritiesInAllModels);
         if (!userAuthoritiesInOneModel)
             return res.sendStatus(401);
         if (userAuthoritiesInOneModel === "*" || userAuthoritiesInOneModel.includes(method))

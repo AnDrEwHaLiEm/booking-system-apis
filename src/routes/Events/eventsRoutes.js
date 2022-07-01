@@ -7,7 +7,8 @@ const uploadEventPoster = require('../../uploadImages/EventPoster/multerSetupEve
 eventsRouterPartner.post('/new', uploadEventPoster.single('posterImage'), event.getAvailableSeat, async (req, res) => {
     try {
         req.body.poster = req.file.filename;
-        if (req.body.endDate <= Date.now() + (24 * 60 * 60 * 1000))
+        req.body.Cost = req.body.Cost.split(",");
+        if (req.body.startDate <= Date.now() + (24 * 60 * 60 * 1000))
             return res.status(400).send("End date must be After 24 hour");
         return event.createModel(req, res);
     } catch (error) {
