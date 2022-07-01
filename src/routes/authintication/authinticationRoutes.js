@@ -2,7 +2,7 @@ const express = require('express');
 const authintication = require('../../authintication/authintication');
 const authRouter = express.Router();
 const authinticationUser = require("../../authintication/authinticationUsers");
-authRouter.post('/loginEmployee', async (req, res) => {
+authRouter.post('/login', async (req, res) => {
     try {
         return authintication.logIn(req, res);
     } catch (error) {
