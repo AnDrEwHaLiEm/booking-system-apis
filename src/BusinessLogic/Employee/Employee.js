@@ -1,6 +1,7 @@
 const Edit = require('../Edit/Edit');
 const bcrypt = require('bcryptjs');
 const EmployeeModel = require('../../MongoSchema/Employee/employeeModel');
+const companyModel = require('../../MongoSchema/Company/companyModel');
 
 class Employee extends Edit {
     constructor(Model) {
@@ -67,12 +68,17 @@ class Employee extends Edit {
             if (!getOneModel) return res.sendStatus(404);
             const {
                 firstName, lastName, phoneNumber, nationalId,
-                avatar, age, gender, email
+                avatar, age, gender, email, isaPartner, workAt
             } = getOneModel;
+            let companyNameInfo = "";
+            if (isaPartner) {
+                const company = await companyModel.findById({ _id: workAt });
+                companyNameInfo = company.companyName;
+            }
             return res.json({
                 result: {
                     firstName, lastName, phoneNumber, nationalId,
-                    avatar, age, gender, email
+                    avatar, age, gender, email, isaPartner, companyNameInfo
                 }
             });
         } catch (error) {

@@ -35,6 +35,13 @@ hallsRouter.get('/showOne/:_id', async (req, res) => {
     }
 })
 
+hallsRouter.get('/showAllInOneCompany', async (req, res) => {
+    try {
+        return halls.getAllHallsInOneCompany(req, res);
+    } catch (error) {
+        return res.sendStatus(400);
+    }
+})
 
 hallsRouter.get('/showMany/:limit', async (req, res) => {
     try {
