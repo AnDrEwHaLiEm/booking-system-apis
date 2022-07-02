@@ -96,7 +96,7 @@ class Events extends Edit {
 
     async get5Poster(req, res) {
         try {
-            const event = this.Model.find().limit(5);
+            const event = await this.Model.find().limit(5);
             const result = event.map((element) => {
                 const { _id, poster } = element;
                 return { _id, poster };
