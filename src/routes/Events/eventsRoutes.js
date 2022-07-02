@@ -42,6 +42,14 @@ eventsRouter.get('/showMany/:limit/:department', async (req, res) => {
     }
 })
 
+eventsRouter.get('/slider', async (req, res) => {
+    try {
+        return event.get5Poster(req, res);
+    } catch (error) {
+        return res.sendStatus(400);
+    }
+})
+
 
 
 module.exports = { eventsRouter, eventsRouterPartner };

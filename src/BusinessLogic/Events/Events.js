@@ -81,7 +81,7 @@ class Events extends Edit {
                     hallName
                     , address
                     , hallType
-                    } = getOnehall;
+                } = getOnehall;
                 const result = { presenter, avalableSeat, Cost, eventTitle, poster, department, hallId, startTime, endTime, hallName, address, hallType };
                 return res.status(200).send(result);
             }
@@ -89,6 +89,19 @@ class Events extends Edit {
                 return res.status(404);
             }
 
+        } catch (error) {
+            return res.sendStatus(400);
+        }
+    }
+
+    async get5Poster(req, res) {
+        try {
+            const event = this.Model.find().limit(5);
+            const result = event.map((element) => {
+                const { _id, poster } = element;
+                return { _id, poster };
+            });
+            return res.send(result);
         } catch (error) {
             return res.sendStatus(400);
         }
