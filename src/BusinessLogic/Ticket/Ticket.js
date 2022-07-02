@@ -16,22 +16,25 @@ class Ticket extends Edit {
 
 
     async makeChairUnAvailable(req, res, next) {
-        const { eventId, chairClass } = req.body;
-        const event = await eventModel.findById({ _id: eventId });
-        let index = chairClass.charCodeAt(0) - 'A'.charCodeAt(0);
-        let avalableSeat = event.avalableSeat;
-        let chairNumber = avalableSeat[index] + chairClass;
-        avalableSeat[index] -= 1;
-        if (avalableSeat[index] >= 0) {
-            await eventModel.updateOne({ _id: eventId }, { avalableSeat });
-            req.body.chairNumber = chairNumber;
-            req.body.userId = req.body.decodedToken._id;
-            next();
+        try {
+            const { eventId, chairClass } = req.body;
+            const event = await eventModel.findById({ _id: eventId });
+            let index = chairClass.charCodeAt(0) - 'A'.charCodeAt(0);
+            let avalableSeat = event.avalableSeat;
+            let chairNumber = avalableSeat[index] + chairClass;
+            avalableSeat[index] -= 1;
+            if (avalableSeat[index] >= 0) {
+                await eventModel.updateOne({ _id: eventId }, { avalableSeat });
+                req.body.chairNumber = chairNumber;
+                req.body.userId = req.body.decodedToken._id;
+                next();
+            }
+            else {
+                return res.send(400).send("There is Not Seat");
+            }
+        } catch (error) {
+            return res.sendStatus(400);
         }
-        else {
-            return res.send(400).send("There is Not Seat");
-        }
-
     }
 
     async payACost(req, res) {

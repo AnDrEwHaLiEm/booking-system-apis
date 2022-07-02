@@ -10,10 +10,6 @@ const CompanyModel = mongoose.Schema({
     phoneNumber: requiredString,
     address: requiredString,
     serves: String,
-    admin: {
-        type: [String],
-        default: [],
-    }
 })
 
 
