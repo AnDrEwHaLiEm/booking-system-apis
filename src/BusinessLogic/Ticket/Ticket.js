@@ -136,32 +136,14 @@ class Ticket extends Edit {
     async getMay(req, res) {
         try {
             const { _id } = req.body.decodedToken;
-            const ticket = await this.Model.findById(_id);
-            if (ticket) {
-                const event = await eventModel.findById(ticket.eventId);
-                const hall = await hallsModel.findById(event.hallId);
-                const { eventTitle, poster, startTime, endTime, Cost } = event;
-                const { hallName, address } = hall;
-                const { paid, expairAt, chairNumber, chairClass } = ticket;
-                const index = chairClass.charCodeAt(0) - 'A'.charCodeAt(0);
-                const costTicket = Cost[index];
-                const result = {
-                    eventTitle
-                    , poster
-                    , presenter
-                    , startTime
-                    , endTime
-                    , hallName
-                    , address
-                    , paid
-                    , expairAt
-                    , chairNumber
-                    , Cost: costTicket
-                }
-                return res.send(result);
-            }
-            else
-                return res.sendStatus(404);
+            const ticket = await this.Model.find({ userId: _id });
+            const result = await Promise.all(ticket.map(async (element) => {
+                const _id = element._id;
+                const event = await eventModel.findById(element.eventId);
+                const { eventTitle, poster, startTime, endTime } = event;
+                return { _id: _id, eventTitle: eventTitle, poster: poster, startTime: startTime, endTime: endTime };
+            }));
+            return res.json({ result });
         } catch (error) {
             return res.sendStatus(400);
         }
