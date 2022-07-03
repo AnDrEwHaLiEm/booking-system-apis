@@ -12,6 +12,18 @@ class Ticket extends Edit {
         this.makeChairAvailable = this.makeChairAvailable.bind(this);
         this.removeTicketFromUser = this.removeTicketFromUser.bind(this);
         this.makeChairUnAvailable = this.makeChairUnAvailable.bind(this);
+        this.addTicketToUser = this.addTicketToUser.bind(this);
+    }
+
+    async createnewTicket(req, res) {
+        try {
+            const newModel = new this.Model(req.body);
+            await this.addTicketToUser(newModel.userId, newModel._id);
+            const model = await newModel.save();
+            return res.json({ model });
+        } catch (error) {
+            return res.status(400).send(error);
+        }
     }
 
 
@@ -75,6 +87,12 @@ class Ticket extends Edit {
     }
     async removeTicketFromUser(user_id, ticket_id) {
         await UserModel.findByIdAndUpdate({ _id: user_id }, { $pull: { ticketsHistory: ticket_id } });
+    }
+
+    async addTicketToUser(user_id, ticket_id) {
+        console.log(user_id, ticket_id);
+        const x = await userModel.findByIdAndUpdate({ _id: user_id }, { $addToSet: { ticketsHistory: ticket_id } },{ new: true });
+        console.log(x);
     }
 
     async getOne(req, res) {

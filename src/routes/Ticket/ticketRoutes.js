@@ -5,7 +5,7 @@ const ticketRouter = express.Router();
 
 ticketRouter.post('/new', ticket.deleteExpair, ticket.makeChairUnAvailable,async (req, res) => {
     try {
-        return ticket.createModel(req, res);
+        return ticket.createnewTicket(req, res);
     } catch (error) {
         return res.sendStatus(400);;
     }
