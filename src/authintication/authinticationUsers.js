@@ -26,11 +26,11 @@ class AuthinticationUser {
         const { email, password } = req.body
         const user = await userModel.findOne({ email });
         if (!user) {
-            return res.status(400).send('email or password is error');
+            return res.status(404).send('email or password is error');
         }
         const passwordIsCorrect = await bcrypt.compare(password, user.password);
         if (!passwordIsCorrect) {
-            return res.status(400).send('email or password is error');
+            return res.status(404).send('email or password is error');
         }
         //await userModel.updateOne({ _id: user._id }, { resetPassword: "" });
         const token = this.createMyToken({ _id: user._id, email: user.email, phone: user.phone })

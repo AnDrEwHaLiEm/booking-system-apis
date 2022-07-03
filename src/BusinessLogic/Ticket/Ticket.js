@@ -47,7 +47,7 @@ class Ticket extends Edit {
         }
     }
     async deleteExpair(req, res, next) {
-        const tickets = await this.Model.find({ expairAt: { $lte: Date.now() }, paid: false });
+        const tickets = await this.Model.find({ expairAt: { $lte: Date.now().valueOf() }, paid: false });
         console.log(tickets);
         let _ids = [];
         tickets.forEach(async (item) => {
@@ -92,6 +92,7 @@ class Ticket extends Edit {
                 const index = chairClass.charCodeAt(0) - 'A'.charCodeAt(0);
                 const costTicket = Cost[index];
                 const result = {
+                    _id,
                     firstName
                     , lastName
                     , phoneNumber
