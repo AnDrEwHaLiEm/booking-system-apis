@@ -38,7 +38,6 @@ class Employee extends Edit {
         try {
             const { _id, email, phoneNumber, nationalId } = req.body;
             const employee = await this.Model.exists({ _id: { $ne: _id }, $or: [{ email }, { phoneNumber }, { nationalId }] });
-            console.log(employee)
             if (employee) {
                 res.status(406).send("this email,phone,nationalId use by some one else");
             }
