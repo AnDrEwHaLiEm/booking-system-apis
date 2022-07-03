@@ -55,4 +55,12 @@ userRouter.get("/profile", async (req, res) => {
     }
 })
 
+userRouter.get("/isPartner", async (req, res) => {
+    try {
+        return user.isAPartner(req, res);
+    } catch (error) {
+        return res.status(400).send(error);
+    }
+})
+
 module.exports = { userRouter, userRoterGuest };

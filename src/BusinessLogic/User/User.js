@@ -37,6 +37,18 @@ class User extends Employee {
             return res.sendStatus(400);
         }
     }
+
+    async isAPartner(req, res) {
+        const { _id } = req.body.decodedToken;
+        const user = await this.Model.findById(_id);
+        if (user) {
+            const { isaPartner } = user;
+            return res.send(isaPartner);
+        }
+        else {
+            return res.send(false);
+        }
+    }
 }
 
 const user = new User(UserModel);
